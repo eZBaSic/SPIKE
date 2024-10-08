@@ -1,8 +1,8 @@
 const WebSocket = require('ws');
 const { handleWin } = require('./transfer'); // Import the handleWin function
 
-// Start WebSocket server on port 8080
-const wss = new WebSocket.Server({ port: 8080 });
+const PORT = process.env.PORT || 8080;  // Use the Heroku-assigned port
+const wss = new WebSocket.Server({ port: PORT });
 
 let players = [];
 let currentTurn = 0; // 0: Player 1's turn, 1: Player 2's turn
