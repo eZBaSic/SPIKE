@@ -125,7 +125,7 @@
     let playerIndex = null;
     let currentTurn = 0;
 
-    const ws = new WebSocket('ws://localhost:8080');
+    const ws = new WebSocket('ws://frozen-harbor-42733-1ea31a73041b.herokuapp.com');
 
     ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
