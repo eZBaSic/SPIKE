@@ -1,85 +1,127 @@
-const WebSocket = require('ws');
-const { handleWin } = require('./transfer'); // Import the handleWin function
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.P.I.K.E. - Login</title>
+    <style>
+        body {
+            font-family: 'Arial', '04b';
+            background-color: #1a1a1a;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('Images/LogIn_Background.png');
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat; 
+        }
 
-// Start WebSocket server on port 8080
-const wss = new WebSocket.Server({ port: 8080 });
+        .login-container {
+            background-color: #2b2b2b;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            width: 350px;
+            background-image: url('Images/LogIn_UI.png');
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat; 
+        }
 
-let players = [];
-let currentTurn = 0; // 0: Player 1's turn, 1: Player 2's turn
-let playerHealths = [100, 100]; // [Player 1 health, Player 2 health]
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #0b0802ae;
+        }
 
-// Broadcast a message to all connected players
-function broadcast(data) {
-  players.forEach(player => {
-    if (player.readyState === WebSocket.OPEN) {
-      player.send(JSON.stringify(data));
-    }
-  });
-}
+        .login-container label {
+            text-align: center;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #090505;
+        }
 
-// Reset the game
-function resetGame() {
-  playerHealths = [100, 100];  // Reset health
-  currentTurn = 0;             // Reset turn to Player 1
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 93%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #3d3d3d;
+            color: #0c0606;
+            font-size: 16px;
+            background-image: url('Images/LogIn_box.png'); 
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat; 
+        }
 
-  // Inform all players about the reset
-  broadcast({
-    type: 'reset',
-    healths: playerHealths,
-    currentTurn,
-  });
-}
+        .login-container input[type="text"]::placeholder,
+        .login-container input[type="password"]::placeholder {
+            color: #b3b3b3;
+        }
 
-// Handle new player connections
-wss.on('connection', (ws) => {
-  if (players.length >= 2) {
-    ws.send(JSON.stringify({ message: 'Game is full' }));
-    ws.close();
-    return;
-  }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #c7881400;
+            border: none;
+            border-radius: 5px;
+            color: #1a1a1a;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            background-image: url('Images/Battle\ Button.png');
+            background-size: contain;
+            background-position: center; 
+            background-repeat: no-repeat; 
+        }
 
-  players.push(ws);
-  const playerIndex = players.length - 1;
+        .login-container button:hover {
+            transform: scale(1.2);
+        }
 
-  ws.send(JSON.stringify({
-    message: 'Connected',
-    playerIndex,
-    healths: playerHealths,
-    currentTurn
-  }));
+        .login-container button:active {
+            transform: scale(0.95);
+        }
 
-  ws.on('message', (message) => {
-    const data = JSON.parse(message);
+        .login-container p {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
 
-    if (data.type === 'attack' && playerIndex === currentTurn) {
-      const opponentIndex = playerIndex === 0 ? 1 : 0;
-      playerHealths[opponentIndex] -= data.damage;
-      currentTurn = opponentIndex;
+        .login-container p a {
+            color: #1a1a1a;
+            text-decoration: none;
+        }
 
-      // Broadcast the updated health and turn to both players
-      broadcast({
-        type: 'update',
-        healths: playerHealths,
-        currentTurn,
-      });
+        .login-container p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
 
-      // Check for win condition
-      if (playerHealths[opponentIndex] <= 0) {
-        broadcast({
-          type: 'win',
-          winner: playerIndex
-        });
+    <div class="login-container">
+        <h2>S.P.I.K.E.</h2>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
 
-        // Call handleWin when the game ends
-        handleWin(playerIndex);  // Trigger the Solana transfer based on the winner
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
 
-        // Reset the game after 5 seconds
-        setTimeout(resetGame, 5000);
-      }
-    }
-  });
+        <button onclick="window.location.href='home.html';">Log In</button>
+        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+    </div>
 
-  ws.on('close', () => {
-    players = players.filter(player => player !== ws);
-  });
-});
+</body>
+</html>
