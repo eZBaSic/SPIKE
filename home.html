@@ -16,6 +16,10 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-image: url('Images/LogIn_Background.png'); /* Your image path here */
+            background-size: cover; /* This will make sure the image covers the entire page */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Ensure the image doesn't repeat */
         }
 
         h1 {
@@ -32,17 +36,21 @@
         }
 
         .button-container button {
-            width: 200px;
-            padding: 15px;
+            width: 400px;
+            height: 50px;
             margin: 15px 0;
             background-color: #e63946;
             border: none;
-            border-radius: 8px;
+            border-radius: 30px;
             color: white;
             font-size: 20px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            background-image: url('Images/LogIn_box.png');
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat; 
         }
 
         .button-container button:hover {
@@ -59,7 +67,7 @@
 
     <h1>S.P.I.K.E. Menu</h1>
     <div class="button-container">
-        <button onclick="window.location.href='battle.html';">BATTLE</button>    
+        <button onclick="window.location.href='Battle.html';">BATTLE</button>    
         <button onclick="window.location.href='explore.html';">EXPLORE</button>    
         <button onclick="window.location.href='shop.html';">SHOP</button>    
     </div>
